@@ -1,9 +1,15 @@
-import { Module } from '@nestjs/common';
+import {
+  MiddlewareConsumer,
+  Module,
+  NestModule,
+  RequestMethod,
+} from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
+import { ApiKeyMiddleware } from 'src/api/middleware';
+import { CNPJHTTPDataSourceImpl } from 'src/datasource/cnpj';
 import { DocumentValidationController } from 'src/api/controller';
 import { CNPJWebServiceClientImpl } from 'src/datasource/client';
 import { DocumentValidateUseCaseImpl } from 'src/usecase/document';
-import { CNPJHTTPDataSourceImpl } from 'src/datasource/cnpj';
 
 @Module({
   imports: [
@@ -28,4 +34,11 @@ import { CNPJHTTPDataSourceImpl } from 'src/datasource/cnpj';
     },
   ],
 })
-export class AppModule {}
+export class AppModule implements NestModule {
+  configure(consumer: MiddlewareConsumer) {
+    consumer.apply(ApiKeyMiddleware).forRoutes({
+      path: '/valida',
+      method: RequestMethod.POST,
+    });
+  }
+}
