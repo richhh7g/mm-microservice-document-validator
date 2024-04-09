@@ -6,6 +6,7 @@ import {
 } from '@nestjs/common';
 import { HttpModule } from '@nestjs/axios';
 import { ConfigModule } from '@nestjs/config';
+import { CacheModule } from '@nestjs/cache-manager';
 import { ApiKeyMiddleware } from 'src/api/middleware';
 import { CNPJHTTPDataSourceImpl } from 'src/datasource/cnpj';
 import { DocumentValidationController } from 'src/api/controller';
@@ -18,6 +19,7 @@ import { DocumentValidateUseCaseImpl } from 'src/usecase/document';
       isGlobal: true,
       envFilePath: '.env',
     }),
+    CacheModule.register(),
     HttpModule.register({
       timeout: 1000, // Max timeout in ms
     }),
