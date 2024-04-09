@@ -4,6 +4,7 @@ import {
   NestModule,
   RequestMethod,
 } from '@nestjs/common';
+import { HttpModule } from '@nestjs/axios';
 import { ConfigModule } from '@nestjs/config';
 import { ApiKeyMiddleware } from 'src/api/middleware';
 import { CNPJHTTPDataSourceImpl } from 'src/datasource/cnpj';
@@ -16,6 +17,9 @@ import { DocumentValidateUseCaseImpl } from 'src/usecase/document';
     ConfigModule.forRoot({
       isGlobal: true,
       envFilePath: '.env',
+    }),
+    HttpModule.register({
+      timeout: 1000, // Max timeout in ms
     }),
   ],
   controllers: [DocumentValidationController],
