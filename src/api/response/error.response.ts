@@ -1,3 +1,6 @@
-export interface ErrorResponse {
-  error: string[];
+import { ApiProperty } from '@nestjs/swagger';
+
+export class ErrorResponse {
+  @ApiProperty()
+  errors: string[];
 }

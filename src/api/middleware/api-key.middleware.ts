@@ -10,7 +10,7 @@ export class ApiKeyMiddleware implements NestMiddleware {
     const apiKey = req.headers['x-api-key'];
 
     const response: ErrorResponse = {
-      error: ['API key inválida.'],
+      errors: ['API key inválida.'],
     };
     if (!apiKey) {
       return res.status(HttpStatus.UNAUTHORIZED).json(response);
