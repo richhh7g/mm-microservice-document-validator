@@ -34,7 +34,7 @@ export class DocumentValidateUseCaseImpl implements DocumentValidateUseCase {
 
     await this.cacheManager.set(
       `${CACHE_KEY}:${document}`,
-      document,
+      datasourceResult.cnpj || document,
       TWENTY_SECONDS,
     );
 
