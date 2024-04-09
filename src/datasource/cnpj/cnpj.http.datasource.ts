@@ -15,7 +15,7 @@ export class CNPJHTTPDataSourceImpl implements CNPJHTTPDataSource {
 
   async findCNPJ(cnpj: string): Promise<CNPJResponseDTO> {
     try {
-      const data = await this.client.request({
+      const { data } = await this.client.request({
         url: `/${cnpj}`,
         method: 'GET',
       });

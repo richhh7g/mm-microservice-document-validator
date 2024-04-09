@@ -1,35 +1,40 @@
-import axios, { AxiosRequestConfig } from 'axios';
-import { HttpException, HttpStatus, Injectable, Logger } from '@nestjs/common';
+import { HttpService } from '@nestjs/axios';
 import { ConfigService } from '@nestjs/config';
+import { HttpException, HttpStatus, Injectable, Logger } from '@nestjs/common';
+import { AxiosRequestConfig, AxiosResponse } from 'axios';
+import { firstValueFrom } from 'rxjs';
 import { CNPJWebServiceResponseDTO } from './cnpj-web-service.dto';
 
 export interface CNPJWebServiceClient {
   request<Data = CNPJWebServiceResponseDTO>(
     options: Omit<AxiosRequestConfig, 'baseUrl'>,
-  ): Promise<Data>;
+  ): Promise<AxiosResponse<Data, any>>;
 }
 
 @Injectable()
-export class CNPJWebServiceClientImpl implements CNPJWebServiceClient {
-  private readonly baseUrl = this.configService.get<string>(
-    'CNPJ_DATA_SOURCE_URL',
-  );
+export class CNPJWebServiceClientImpl {
+  private readonly baseUrl: string;
 
-  constructor(private readonly configService: ConfigService) {}
+  constructor(
+    private readonly httpClient: HttpService,
+    private readonly configService: ConfigService,
+  ) {
+    this.baseUrl = this.configService.get<string>('CNPJ_DATA_SOURCE_URL');
+  }
 
-  async request<Data>(
+  async request<Data = CNPJWebServiceResponseDTO>(
     options: Omit<AxiosRequestConfig, 'baseUrl'>,
-  ): Promise<Data> {
+  ): Promise<AxiosResponse<Data, any>> {
     const headers = options.headers;
 
     try {
-      const result = await axios.request<Data>({
+      const result = this.httpClient.request<Data>({
         ...options,
         baseURL: this.baseUrl,
         headers,
       });
 
-      return result.data;
+      return await firstValueFrom(result);
     } catch (err) {
       Logger.error(err);
 

@@ -1,21 +1,24 @@
-import { Injectable, NestMiddleware, HttpStatus } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import { Request, Response, NextFunction } from 'express';
+import { Injectable, NestMiddleware, HttpStatus } from '@nestjs/common';
+import { ErrorResponse } from 'src/api/response';
 
 @Injectable()
 export class ApiKeyMiddleware implements NestMiddleware {
+  constructor(private readonly configService: ConfigService) {}
   use(req: Request, res: Response, next: NextFunction) {
-    const apiKey = req.headers['X-API-Key'];
+    const apiKey = req.headers['x-api-key'];
 
+    const response: ErrorResponse = {
+      error: ['API key inválida.'],
+    };
     if (!apiKey) {
-      return res
-        .status(HttpStatus.UNAUTHORIZED)
-        .json({ error: 'API key inválida.' });
+      return res.status(HttpStatus.UNAUTHORIZED).json(response);
     }
 
-    if (apiKey !== process.env.API_KEY) {
-      return res
-        .status(HttpStatus.UNAUTHORIZED)
-        .json({ error: 'API key inválida.' });
+    const apiKeyEnv = this.configService.get<string>('API_KEY');
+    if (apiKey !== apiKeyEnv) {
+      return res.status(HttpStatus.UNAUTHORIZED).json(response);
     }
 
     next();
