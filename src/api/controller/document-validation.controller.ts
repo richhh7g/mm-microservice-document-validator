@@ -6,6 +6,7 @@ import {
   Logger,
   Post,
   Res,
+  ValidationPipe,
 } from '@nestjs/common';
 import { ApiBody, ApiResponse, ApiTags, ApiSecurity } from '@nestjs/swagger';
 import { Response } from 'express';
@@ -35,6 +36,11 @@ export class DocumentValidationController {
     description: 'Returns if document is valid or not',
   })
   @ApiResponse({
+    status: HttpStatus.BAD_REQUEST,
+    type: ErrorResponse,
+    description: 'Error: Bad Request',
+  })
+  @ApiResponse({
     status: HttpStatus.UNAUTHORIZED,
     type: ErrorResponse,
     description: 'Error: Unauthorized',
@@ -46,7 +52,7 @@ export class DocumentValidationController {
   })
   @ApiSecurity('API_KEY', ['x-api-key'])
   async checkDocument(
-    @Body() body: CheckDocumentBodyDTO,
+    @Body(new ValidationPipe()) body: CheckDocumentBodyDTO,
     @Res() res: Response,
   ): Promise<CheckDocumentResponseDTO | ErrorResponse> {
     try {
