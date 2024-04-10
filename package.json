@@ -1,8 +1,8 @@
 {
-  "name": "mm-microservice-cnpj-validator",
+  "name": "mm-microservice-document-validator",
   "private": true,
   "version": "1.0.0",
-  "description": "Nest TypeScript starter repository",
+  "description": "Microservice to validate documents",
   "license": "MIT",
   "scripts": {
     "build": "nest build",
