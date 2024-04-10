@@ -36,6 +36,11 @@ export class DocumentValidationController {
     description: 'Returns if document is valid or not',
   })
   @ApiResponse({
+    status: HttpStatus.BAD_REQUEST,
+    type: ErrorResponse,
+    description: 'Error: Bad Request',
+  })
+  @ApiResponse({
     status: HttpStatus.UNAUTHORIZED,
     type: ErrorResponse,
     description: 'Error: Unauthorized',
