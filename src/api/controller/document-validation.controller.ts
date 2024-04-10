@@ -6,6 +6,7 @@ import {
   Logger,
   Post,
   Res,
+  ValidationPipe,
 } from '@nestjs/common';
 import { ApiBody, ApiResponse, ApiTags, ApiSecurity } from '@nestjs/swagger';
 import { Response } from 'express';
@@ -46,7 +47,7 @@ export class DocumentValidationController {
   })
   @ApiSecurity('API_KEY', ['x-api-key'])
   async checkDocument(
-    @Body() body: CheckDocumentBodyDTO,
+    @Body(new ValidationPipe()) body: CheckDocumentBodyDTO,
     @Res() res: Response,
   ): Promise<CheckDocumentResponseDTO | ErrorResponse> {
     try {
