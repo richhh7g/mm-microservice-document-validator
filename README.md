@@ -1,7 +1,8 @@
 # Microserviço de Veracidade de Documentos
 
 ## Descrição
-O Microserviço de Veracidade de Documentos é um microserviço para validação de documentos.
+
+O Microserviço de Verificação de Documentos é uma aplicação desenvolvida para validar a autenticidade e integridade de diversos tipos de documentos.
 
 ## Instalando dependências do projeto
 
@@ -14,7 +15,7 @@ npm install
 #### Desenvolvimento
 
 ```sh
-npm run dev
+npm run start:dev
 ```
 
 #### Produção
@@ -25,6 +26,7 @@ npm run start
 ```
 
 ## Segurança
+
 Utilize uma ApiKey para acessar o microserviço, no header da requisição: `x-api-key: {APIKEY}`
 
 ## Rotas
@@ -41,9 +43,9 @@ x-api-key: {APIKEY}
 }
 ```
 
-## Documentação compĺeta com Swagger
+## Documentação completa com Swagger
 
-Para documentação da API, acesse: [http://localhost:{PORT}/docs](http://localhost/docs)
+Acesse: [http://localhost:{PORT}/docs](http://localhost:{PORT}/docs)
 
 ## Docker
 
