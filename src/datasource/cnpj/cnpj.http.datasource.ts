@@ -21,7 +21,7 @@ export class CNPJHTTPDataSourceImpl implements CNPJHTTPDataSource {
       });
 
       return {
-        cnpj: data.razao_social,
+        cnpj: data.estabelecimento.cnpj,
         companyName: data.razao_social,
         currentStatus: data.estabelecimento.situacao_cadastral === 'Ativa',
       };
