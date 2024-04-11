@@ -32,16 +32,15 @@ export class DocumentValidateUseCaseImpl implements DocumentValidateUseCase {
 
     const datasourceResult = await this.datasource.findCNPJ(document);
 
+    const isDocumentEqualToExpected =
+      datasourceResult.cnpj === expectedDocument;
+
     await this.cacheManager.set(
       `${CACHE_KEY}:${document}`,
-      datasourceResult.cnpj || document,
+      isDocumentEqualToExpected ? datasourceResult.cnpj : document,
       TWENTY_SECONDS,
     );
 
-    const isDocumentEqualToExpected = document === expectedDocument;
-
-    return (
-      datasourceResult.cnpj === expectedDocument || isDocumentEqualToExpected
-    );
+    return isDocumentEqualToExpected || document === expectedDocument;
   }
 }
